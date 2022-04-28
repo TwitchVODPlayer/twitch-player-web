@@ -1,0 +1,30 @@
+:root {
+    --background-color: #0e0e10;
+    --navbar-color: #18181b;
+
+    --primary-color: #a970ff;
+    --secondary-color: #2e2e30;
+    --text-color: #efeff1;
+    --link-hover-color: #bf94ff;
+    --background-input-color: hsla(0, 0%, 100%, 0.2);
+    --background-input-color-darker: hsla(0, 0%, 100%, 0.15);
+    --loading-background-color: #00000066;
+
+    --error-color: #eb0400;
+    --success-color: #00f593;
+    --info-color: #0e0e10;
+    --warning-color: #0e0e10;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("../font/Inter.ttf") format("truetype");
+}
+
+a:hover {
+    color: var(--link-hover-color) !important;
+}
+
+svg * {
+    transform-box: fill-box;
+}
