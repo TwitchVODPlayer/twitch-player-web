@@ -3,10 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "set NODE_ENV=development&& vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "dev": "set NODE_ENV=development&& npx vite",
+    "build": "npx vue-tsc --noEmit && npx vite build",
     "start": "npx serve -p 1102",
-    "preview": "vite preview"
+    "preview": "npx vite preview"
   },
   "dependencies": {
     "hls.js": "^1.1.5",
