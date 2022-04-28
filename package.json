@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/types": "^7.17.0",
+    "@vitejs/plugin-vue": "^2.3.1",
     "hls.js": "^1.1.5",
     "plyr": "^3.7.2",
     "serve": "^13.0.2",
@@ -25,7 +26,6 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.24",
-    "@vitejs/plugin-vue": "^2.3.1",
     "typescript": "^4.5.4"
   }
 }
