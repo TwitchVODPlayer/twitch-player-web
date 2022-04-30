@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, onUpdated, watch } from 'vue'
+import { computed, onBeforeMount, watch } from 'vue'
 import { vodModule } from '../../store/vod'
-import { mainModule } from '../../store/main'
 import { getPlaylistApiUrl } from '../../api/vod'
-import TwitchPlayerLogo from '../../assets/img/logo.svg'
 
 import VideoPlayer from '../VideoPlayer.vue'
+import Error from '../Native/Error.vue'
+
 const props = defineProps({
     vodId: {
         type: [Number,String],
@@ -30,25 +30,5 @@ onBeforeMount(() => {
 
 <template>
     <VideoPlayer v-if="vodModule.isValid" :source="vodSource" />
-    <div class="not-found" v-else-if="!mainModule.isLoading">
-        <div>
-            <TwitchPlayerLogo class="logo" />
-        </div>
-        <p class="details">No VOD found with id {{vodId}}</p>
-    </div>
+    <Error title="" :message="`No VOD found with id ${vodId}`" />
 </template>
-
-<style scoped>
-.not-found {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 3rem;
-}
-.logo {
-    width: 10rem;
-}
-.details {
-    font-weight: bold;
-}
-</style>

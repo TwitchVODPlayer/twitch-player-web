@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Ref, ref, watch } from 'vue'
-import SearchIcon from '../assets/img/search.svg'
+import { Ref, ref } from 'vue'
+import SearchIcon from '../../assets/img/search.svg'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
@@ -47,6 +47,7 @@ const onInput = function() {
     display: flex;
     width: 100%;
     max-width: 30rem;
+    height: 2.3rem;
 }
 #search .search-input {
     flex-grow: 1;
@@ -81,19 +82,16 @@ const onInput = function() {
 
 #search .search-icon {
     background-color: var(--background-input-color-darker);
-    width: 2.8rem;
-    display: inline-flex;
     position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
     vertical-align: middle;
-    overflow: hidden;
     text-decoration: none;
     white-space: nowrap;
     user-select: none;
     border-radius: 0 6px 6px 0 !important;
     font-size: .9rem;
-    cursor: pointer;
 }
 #search .search-icon:hover {
     background-color: var(--background-input-color);
@@ -102,12 +100,14 @@ const onInput = function() {
     background-color: transparent;
     border: none;
     padding: .2rem;
+    width: 2rem;
+    cursor: pointer;
 }
 #search .search-button:disabled {
     cursor: not-allowed;
 }
 #search .search-icon svg {
-    width: 100%;
+    width: 1.5rem;
     fill: var(--text-color);
 }
 </style>

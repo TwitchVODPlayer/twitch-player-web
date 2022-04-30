@@ -34,7 +34,7 @@ export class UserModule extends VuexModule {
 
     /* Getters */
     get isLogged(): boolean {
-        return !!this.user
+        return !!this.token
     }
     get getAccessToken(): string|undefined {
         return this.token
