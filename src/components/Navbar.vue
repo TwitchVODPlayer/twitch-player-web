@@ -3,8 +3,9 @@ import { onBeforeMount, Ref, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { userModule } from '../store/user'
 
-import Search from '../components/Search.vue'
-import Button from './Button.vue'
+import Search from './Native/Search.vue'
+import Button from './Native/Button.vue'
+import Logo from '../assets/img/logo.svg'
 
 const router = useRouter()
 const vodId: Ref<string> = ref("")
@@ -23,20 +24,16 @@ onBeforeMount(() => {
     <nav id="navbar">
         <div class="navbar navbar-left">
             <router-link to="/" class="navbar-item">
-                <a class="main">
-                    <img src="../assets/img/logo.png" class="logo">
-                </a>
+                <Logo class="logo" />
             </router-link>
         </div>
         <div class="navbar navbar-center">
             <Search v-model="vodId" placeholder="Enter a VOD id..." />
         </div>
         <div class="navbar navbar-right">
-            <!-- <div v-if="userModule.isLogged" class="navbar-item">
-                <router-link to="/profile" class="navbar-item">
-                    <img class="user-icon" :src="userModule.getUser?.profile_image_url">
-                </router-link>
-            </div>
+            <!-- <router-link v-if="userModule.isLogged" to="/profile" class="navbar-item">
+                <img :src="userModule.getUser?.profile_image_url">
+            </router-link>
             <div v-else class="navbar-item">
                 <Button class="right" :href="authUrl">Login</Button>
             </div> -->
@@ -48,46 +45,49 @@ onBeforeMount(() => {
 #navbar {
     background-color: var(--navbar-color);
     display: flex;
-    height: 3rem;
+    height: 3.4rem;
     z-index: 100;
     font-size: 1.5em;
     font-size: 1.25em;
+    box-shadow: 0 1px 2px rgba(0,0,0,.9),0 0px 2px rgba(0,0,0,.9);
 }
-#navbar .navbar {
+.navbar {
     display: flex;
     align-items: center;
 }
-#navbar .navbar-left {
+.navbar-left {
     flex: 1;
     justify-content: flex-start;
 }
-#navbar .navbar-right {
+.navbar-right {
     flex: 1;
     justify-content: flex-end;
 }
-#navbar .navbar-center {
+.navbar-center {
     flex: 2;
     flex-shrink: 1;
     justify-content: center;
 }
-#navbar .navbar-item {
-    padding-left: 2rem;
-    padding-right: 2rem;
+.navbar-item {
+    padding: 0.8rem;
 }
-#navbar a {
+a {
     text-decoration: none;
     cursor: pointer;
     color: inherit;
 }
-#navbar .logo {
-    width: 1.7rem;
-    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
+svg {
+    width: 1.5rem;
     vertical-align: bottom;
 }
-#navbar .logo:hover {
-    transform: scale(1.2);
+img {
+    width: 1.9rem;
 }
-#navbar .user-icon {
-    width: 2rem;
+</style>
+
+<style>
+#navbar .logo:hover .arrow {
+    transform-origin: 27px 46px;
+    animation: .8s rotate-third cubic-bezier(0.23, .7, 0.320, 1);
 }
 </style>

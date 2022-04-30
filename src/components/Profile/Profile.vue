@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { userModule } from '../../store/user'
-import Button from '../Button.vue'
+
+import Button from '../Native/Button.vue'
 
 const router = useRouter()
 

@@ -1,7 +1,7 @@
 {
   "name": "twitch-player-web",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "dev": "set NODE_ENV=development&& npx vite",
     "build": "npx vue-tsc --noEmit && npx vite build",

@@ -30,7 +30,7 @@ export function errorHandler(err: Error): Error|undefined {
     if (err instanceof ResponseError === false) return err
 
     switch ((err as ResponseError).status) {
-        case 401: userModule.refreshToken().then(() => userModule.loadUser()); return err // refresh token
+        case 401: userModule.refreshToken().then(() => userModule.loadUser()); return // refresh token
         case 429: // rate-limit
         case 404: return
     }

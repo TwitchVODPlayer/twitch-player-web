@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import Button from '../Button.vue'
-
+import Error from '../Native/Error.vue'
 </script>
 
 <template>
-    <div class="content">
-        <div>
-            <h1>404</h1>
-            <p>
-                Oops! The page you requested doesn't exist :'(
-            </p>
-            <Button @click="$router.back()">Go back</Button>
-        </div>
-    </div>
+    <Error title="Not Found" message="Oops! The page you requested doesn't exist :'(" />
 </template>
-
-<style scoped>
-</style>

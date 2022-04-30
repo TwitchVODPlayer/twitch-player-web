@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import Navbar from '@/components/Navbar.vue'
-import Loading from '@/components/Loading.vue'
 import { onBeforeMount } from 'vue'
 import { userModule } from './store/user'
+
+import Navbar from './components/Navbar.vue'
+import Loading from './components/Native/Loading.vue'
 
 onBeforeMount(() => {
     userModule.loadToken().then(token => {
