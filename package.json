@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development&& npx vite",
     "build": "npx vue-tsc --noEmit && npx vite build",
-    "start": "cd dist && npx serve -p 1102 -n",
+    "start": "cd dist && npx serve -p 1102 -n -s",
     "preview": "npx vite preview"
   },
   "dependencies": {
