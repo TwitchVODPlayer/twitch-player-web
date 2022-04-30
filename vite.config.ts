@@ -5,6 +5,9 @@ import { fileURLToPath, URL } from 'url'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    port: 1102
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL("./src", import.meta.url))
