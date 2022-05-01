@@ -1,7 +1,7 @@
 {
   "name": "twitch-player-web",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "scripts": {
     "dev": "set NODE_ENV=development&& npx vite",
     "build": "npx vue-tsc --noEmit && npx vite build",
@@ -11,7 +11,9 @@
   "dependencies": {
     "@babel/types": "^7.17.0",
     "@vitejs/plugin-vue": "^2.3.1",
+    "click-outside-vue3": "^4.0.1",
     "hls.js": "^1.1.5",
+    "moment": "^2.29.3",
     "plyr": "^3.7.2",
     "serve": "^13.0.2",
     "tslib": "^2.4.0",

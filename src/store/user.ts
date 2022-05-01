@@ -1,40 +1,29 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
 import { login, getUser, refreshToken } from '../api/user'
 import { error } from '../utils/popup'
-import { mainModule } from './main'
 import store from '.'
 
 const ACCESS_TOKEN_KEY = "access_token"
 
-interface LoginPayload {
-    code: string
-    state: string
-    scope: string
-}
-
-interface User {
-    id: string
-    login: string
-    display_name: string
-    description: string
-    offline_image_url: string
-    profile_image_url: string
-    broadcaster_type: string
-    type: string
-    view_count: number
-    created_at: string
-}
 
 @Module({ name: "user", dynamic: true, namespaced: true, store })
 export class UserModule extends VuexModule {
     /* States */
+    loading: boolean = false
+    refreshing_token: boolean = false
     token?: string
     user?: User
 
 
     /* Getters */
+    get isLoading(): boolean {
+        return this.loading
+    }
     get isLogged(): boolean {
         return !!this.token
+    }
+    get isRefreshingToken(): boolean {
+        return this.refreshing_token
     }
     get getAccessToken(): string|undefined {
         return this.token
@@ -47,26 +36,26 @@ export class UserModule extends VuexModule {
     /* Actions */
     @Action
     async login(payload: LoginPayload) {
-        mainModule.setLoading(true)
+        store.commit('main/setLoading', true)
         return login(payload.code, payload.state, payload.scope).then(data => {
             this.context.commit('loginSuccess', data.token)
             return this.loadUser()
         }).catch((err: Error) => {
             this.context.commit('loginFailure', err)
         }).then(() => {
-            mainModule.setLoading(false)
+            store.commit('main/setLoading', false)
         })
     }
     @Action
     async loadUser() {
-        mainModule.setLoading(true)
         if (!this.getAccessToken) return this.context.commit('loadUserFailure', new Error('Access token cannot be null'))
+        store.commit('main/setLoading', true)
         return getUser().then(user => {
             this.context.commit('loadUserSuccess', user)
         }).catch((err: Error) => {
             this.context.commit('loadUserFailure', err)
         }).then(() => {
-            mainModule.setLoading(false)
+            store.commit('main/setLoading', false)
         })
     }
     @Action
@@ -82,19 +71,35 @@ export class UserModule extends VuexModule {
     }
     @Action
     async refreshToken() {
-        mainModule.setLoading(true)
         if (!this.getAccessToken) return this.context.commit('loadUserFailure', new Error('Access token cannot be null'))
+        store.commit('main/setLoading', true)
+        this.context.commit('setRefreshingToken', true)
         return refreshToken().then(data => {
             this.context.commit('loginSuccess', data.token)
         }).catch((err: Error) => {
             this.context.commit('loginFailure', err)
         }).then(() => {
-            mainModule.setLoading(false)
+            store.commit('main/setLoading', false)
+            this.context.commit('setRefreshingToken', false)
         })
     }
 
 
     /* Mutations */
+    @Mutation
+    reset() {
+        this.loading = false
+        this.refreshing_token = false
+        this.user = undefined
+    }
+    @Mutation
+    setLoading(value: boolean) {
+        this.loading = value
+    }
+    @Mutation
+    setRefreshingToken(value: boolean) {
+        this.refreshing_token = value
+    }
     @Mutation
     loginSuccess(token: string) {
         this.token = token
@@ -129,5 +134,6 @@ export class UserModule extends VuexModule {
         this.token = undefined
     }
 }
+
 
 export const userModule = getModule(UserModule, store)

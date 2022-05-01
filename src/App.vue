@@ -3,7 +3,7 @@ import { onBeforeMount } from 'vue'
 import { userModule } from './store/user'
 
 import Navbar from './components/Navbar.vue'
-import Loading from './components/Native/Loading.vue'
+import Loading from './components/Loading.vue'
 
 onBeforeMount(() => {
     userModule.loadToken().then(token => {

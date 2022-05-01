@@ -5,37 +5,44 @@ const routes: Array<RouteRecordRaw> = [
     {
         name: "Login",
         path: '/login',
-        beforeEnter: (to, _, next) => {
+        beforeEnter: (to) => {
             if (!to.query.code) return { name: 'Dashboard' }
-            userModule.login({
+            return userModule.login({
                 code: String(to.query.code),
                 state: String(to.query.state),
                 scope: String(to.query.scope)
-            }).then(() => next({ name: "Dashboard" }))
+            }).then(() => ({ name: "Dashboard" }))
         },
-        component: () => import('../components/Dashboard/Dashboard.vue')
+        component: () => import('../views/Dashboard.vue')
     },
     {
         name: "Dashboard",
         path: '/',
-        component: () => import('../components/Dashboard/Dashboard.vue')
-    },
-    {
-        name: "Profile",
-        path: '/profile',
-        component: () => import('../components/Profile/Profile.vue'),
-        meta: { requiresAuth: true }
+        component: () => import('../views/Dashboard.vue')
     },
     {
         name: "VOD",
         path: '/vod/:vodId',
         props: true,
-        component: () => import('../components/VOD/VOD.vue')
+        component: () => import('../views/VOD.vue')
+    },
+    {
+        name: "Profile",
+        path: '/profile',
+        component: () => import('../views/Profile.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        name: "Videos",
+        path: '/videos/:login',
+        props: true,
+        component: () => import('../views/Videos.vue'),
+        meta: { requiresAuth: true }
     },
     {
         name: "NotFound",
         path: '/:pathMatch(.*)*',
-        component: () => import('../components/Error/NotFound.vue')
+        component: () => import('../views/NotFound.vue')
     }
 ]
 

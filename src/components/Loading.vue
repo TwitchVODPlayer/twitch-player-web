@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { mainModule } from '../../store/main'
-import Logo from '../../assets/img/logo.svg'
+import { mainModule } from '../store/main'
+import Logo from '../assets/img/logo.svg'
 
 const isLoading = computed(() => mainModule.isLoading)
 
@@ -32,12 +32,5 @@ const isLoading = computed(() => mainModule.isLoading)
 .loading-logo {
     position: relative;
     width: 5em;
-}
-</style>
-
-<style>
-#loading .arrow {
-    transform-origin: 27px 46px;
-    animation: .8s rotate-third cubic-bezier(0.23, .7, 0.320, 1) infinite;
 }
 </style>

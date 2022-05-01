@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { mainModule } from '../../store/main'
+import { mainModule } from '../store/main'
 
-import Button from '../Native/Button.vue'
-import ErrorImage from '../../assets/img/error.svg'
+import ErrorImage from '../assets/img/error.svg'
+import Button from './Button.vue'
 
 const props = defineProps({
     title: {

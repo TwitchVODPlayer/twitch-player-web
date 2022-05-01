@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
-import SearchIcon from '../../assets/img/search.svg'
+import SearchIcon from '../assets/img/search.svg'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
@@ -70,6 +70,10 @@ const onInput = function() {
     border-radius: 6px 0 0 6px !important;
     padding: .4rem .6rem !important;
     border: 2px solid var(--background-input-color);
+    transition: border 100ms ease-in, background-color 100ms ease-in;
+}
+#search-input:hover {
+    border-color: var(--border-input-color-hover);
 }
 #search-input:focus, #search-input:active {
     outline: none;
