@@ -1,4 +1,5 @@
-import { getModule } from "vuex-module-decorators"
+import router from "../router"
+import { mainModule } from "../store/main"
 import { userModule } from "../store/user"
 
 interface ApiError {
@@ -26,14 +27,23 @@ export class ResponseError extends Error {
     }
 }
 
-export function errorHandler(err: Error): Error|undefined {
+export function errorHandler(err: Error|ResponseError): Error|undefined {
     if (err instanceof ResponseError === false) return err
 
-    switch ((err as ResponseError).status) {
-        case 401: userModule.refreshToken().then(() => userModule.loadUser()); return // refresh token
-        case 429: // rate-limit
-        case 404: return
+    // refresh token
+    if ((err as ResponseError).needRefresh) {
+        if (!userModule.isRefreshingToken) mainModule.reset().then(() => userModule.refreshToken()).then(() => router.replace({ name: "Dashboard" }))
+        return
     }
+
+    // invalid token
+    if (err.message === "Invalid token") {
+        userModule.logout().then(() => router.replace({ name: "Dashboard" }))
+        return err
+    }    
+
+    // rate-limit
+    if ((err as ResponseError).status === 429) return
 
     return err
 }

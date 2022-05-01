@@ -3,8 +3,8 @@ import { onBeforeMount, Ref, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { userModule } from '../store/user'
 
-import Search from './Native/Search.vue'
-import Button from './Native/Button.vue'
+import Search from './Search.vue'
+import Button from './Button.vue'
 import Logo from '../assets/img/logo.svg'
 
 const router = useRouter()
@@ -31,12 +31,12 @@ onBeforeMount(() => {
             <Search v-model="vodId" placeholder="Enter a VOD id..." />
         </div>
         <div class="navbar navbar-right">
-            <!-- <router-link v-if="userModule.isLogged" to="/profile" class="navbar-item">
-                <img :src="userModule.getUser?.profile_image_url">
+            <router-link v-if="userModule.isLogged" to="/profile" class="navbar-item">
+                <img :src="userModule.getUser?.profile_image_url" class="profile-image">
             </router-link>
             <div v-else class="navbar-item">
                 <Button class="right" :href="authUrl">Login</Button>
-            </div> -->
+            </div>
         </div>
     </nav>
 </template>
@@ -75,6 +75,7 @@ a {
     text-decoration: none;
     cursor: pointer;
     color: inherit;
+    outline: none;
 }
 svg {
     width: 1.5rem;

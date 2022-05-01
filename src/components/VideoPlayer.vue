@@ -72,7 +72,6 @@ const updateQuality = function (newQuality: number) {
 }
 
 onBeforeMount(() => {
-    // TODO: proper error modal/message
     if (!Hls.isSupported()) error("Your browser doesn't support Hls.")
 })
 

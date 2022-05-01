@@ -40,6 +40,11 @@ export class VODModule extends VuexModule {
 
     /* Mutations */
     @Mutation
+    reset() {
+        this.vod_id = undefined
+        this.valid = false
+    }
+    @Mutation
     setVodSuccess(vod_id: number|undefined) {
         this.vod_id = vod_id
     }

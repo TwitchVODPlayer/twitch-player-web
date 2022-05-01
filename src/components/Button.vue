@@ -23,8 +23,8 @@ const onClick = () => {
 
 <style scoped>
 .button {
-    background-color: hsla(0,0%,100%,0.15);
-    border: none;
+    background-color: var(--background-input-color);
+    border: 2px solid var(--background-input-color);
     display: inline-flex;
     position: relative;
     align-items: center;
@@ -34,12 +34,13 @@ const onClick = () => {
     text-decoration: none;
     white-space: nowrap;
     user-select: none;
-    border-radius: .35rem;
-    font-size: 1.1rem;
+    border-radius: .3rem;
+    font-size: .9rem;
     height: auto;
     color: var(--text-color);
+    padding: .25em .8em;
     cursor: pointer;
-    padding: .2em .5em;
+    transition: border 100ms ease-in, background-color 100ms ease-in;
 }
 .button:disabled {
     cursor: not-allowed;
