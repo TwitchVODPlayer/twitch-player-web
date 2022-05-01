@@ -26,11 +26,21 @@ export class ResponseError extends Error {
     }
 }
 
-export function errorHandler(err: Error): Error|undefined {
+export function errorHandler(err: Error|ResponseError): Error|undefined {
     if (err instanceof ResponseError === false) return err
 
+    // refresh token
+    if ((err as ResponseError).needRefresh) {
+        userModule.refreshToken().then(() => userModule.loadUser())
+        return
+    }
+    // invalid token
+    if (err.message === "Invalid token") {
+        userModule.logout()
+        return
+    }
+
     switch ((err as ResponseError).status) {
-        case 401: userModule.refreshToken().then(() => userModule.loadUser()); return // refresh token
         case 429: // rate-limit
         case 404: return
     }
