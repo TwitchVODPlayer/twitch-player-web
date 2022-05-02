@@ -25,10 +25,10 @@ export class FollowModule extends VuexModule {
 
     /* Actions */
     @Action
-    async loadFollows() {
+    async loadFollows(first: number) {
         if (this.getFollows || !store.getters['user/getAccessToken']) return
         this.context.commit('setLoading', true)
-        return getFollows().then(follows => {
+        return getFollows({ first }).then(follows => {
             this.context.commit('loadFollowsSuccess', follows)
         }).catch((err: Error) => {
             this.context.commit('loadFollowsFailure', err)
@@ -37,10 +37,10 @@ export class FollowModule extends VuexModule {
         })
     }
     @Action
-    async loadMoreFollows() {
+    async loadMoreFollows(first: number) {
         if (!this.getNext || !store.getters['user/getAccessToken']) return
         this.context.commit('setLoading', true)
-        return getFollows(this.getNext).then(follows => {
+        return getFollows({ next: this.getNext, first }).then(follows => {
             this.context.commit('loadMoreFollowsSuccess', follows)
         }).catch((err: Error) => {
             this.context.commit('loadMoreFollowsFailure', err)

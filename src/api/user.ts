@@ -30,9 +30,10 @@ export async function getUser(login?: string) {
     })
 }
 
-export async function getFollows(next: string = '') {
-    const query = next ? `?next=${next}` : ''
-    return fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/twitch/follows${query}`, {
+export async function getFollows({ next = '', first }: { next?: string, first: number }) {
+    const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/twitch/follows`)
+    url.search = new URLSearchParams(JSON.parse(JSON.stringify({ next, first }))).toString()
+    return fetch(url.toString(), {
         headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` }
     }).then(res => res.json()).then(res => {
         if (res.error) throw new ResponseError(res)

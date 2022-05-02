@@ -10,9 +10,9 @@ export async function verifyVodId(vod_id: string|number) {
     })
 }
 
-export async function getVideos(login: string, next?: string, filter?: string) {
+export async function getVideos({ login, next, first, filter }: { login: string, next?: string, first?: number, filter?: string}) {
     const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/twitch/videos/${login}`)
-    url.search = new URLSearchParams(JSON.parse(JSON.stringify({ next, filter }))).toString()
+    url.search = new URLSearchParams(JSON.parse(JSON.stringify({ next, first, filter }))).toString()
     return fetch(url.toString(), {
         headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` }
     }).then(res => res.json()).then(res => {

@@ -8,13 +8,13 @@ import Button from './Button.vue'
 
 const follows = computed(() => followModule.getFollows)
 
-const showMore = function() {
+const showMore = function(number: number) {
     if (followModule.isLoading) return
-    followModule.loadMoreFollows()
+    followModule.loadMoreFollows(number)
 }
 
 onBeforeMount(() => {
-    followModule.loadFollows()
+    followModule.loadFollows(20)
 })
 </script>
 
@@ -37,7 +37,9 @@ onBeforeMount(() => {
             </div>
         </div>
         <Logo v-if="followModule.isLoading" class="loading small" />
-        <Button v-if="followModule.getNext && !followModule.isLoading" class="show-more" :disabled="followModule.isLoading" @click="showMore">Show more</Button>
+        <div class="buttons-group">
+            <Button v-if="followModule.getNext && !followModule.isLoading" class="show-more" :disabled="followModule.isLoading" @click="showMore(20)">Show more</Button>
+        </div>
     </div>
 </template>
 

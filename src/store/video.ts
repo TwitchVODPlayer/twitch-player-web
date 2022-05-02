@@ -30,11 +30,11 @@ export class VideoModule extends VuexModule {
 
     /* Actions */
     @Action
-    async loadVideos({ login, filter }: { login: string, filter?: string }) {
+    async loadVideos({ login, first, filter }: { login: string, first?: number, filter?: string }) {
         return this.loadUser({ login, force: !!filter }).then(() => {
             if (!store.getters['user/getAccessToken']) return
             this.context.commit('setLoading', true)
-            return getVideos(login, undefined, filter).then(videos => {
+            return getVideos({ login, first, filter }).then(videos => {
                 this.context.commit('loadVideosSuccess', videos)
             }).catch((err: Error) => {
                 this.context.commit('loadVideosFailure', err)
@@ -44,10 +44,10 @@ export class VideoModule extends VuexModule {
         })
     }
     @Action
-    async loadMoreVideos(login: string) {
+    async loadMoreVideos({ login, first }: { login: string, first?: number }) {
         if (!this.getNext || !store.getters['user/getAccessToken']) return
         this.context.commit('setLoading', true)
-        return getVideos(login, this.getNext).then(videos => {
+        return getVideos({ login, first, next: this.getNext }).then(videos => {
             this.context.commit('loadMoreVideosSuccess', videos)
         }).catch((err: Error) => {
             this.context.commit('loadMoreVideosFailure', err)
