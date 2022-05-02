@@ -66,10 +66,10 @@ const getDateAgo = function(date: string): string {
     return moment(new Date(date)).from(Date.now(), true)
 }
 
-const showMore = function() {
+const showMore = function(first: number) {
     if (!props.login) return router.replace({ name: 'Dashboard' })
     if (videoModule.isLoading) return
-    videoModule.loadMoreVideos(props.login)
+    videoModule.loadMoreVideos({ login: props.login, first })
 }
 
 const changeFilter = function(filter: number|string) {
@@ -83,7 +83,8 @@ const changeFilter = function(filter: number|string) {
 onBeforeMount(() => {
     if (!props.login) return router.replace({ name: 'Dashboard' })
     videoModule.loadVideos({
-        login: props.login
+        login: props.login,
+        first: 20
     })
 })
 </script>
@@ -139,7 +140,7 @@ onBeforeMount(() => {
                 </div>
             </div>
             <Logo v-if="videoModule.isLoading" class="loading small" />
-            <Button v-if="videoModule.getNext && !videoModule.isLoading" class="show-more" :disabled="videoModule.isLoading" @click="showMore">Show more</Button>
+            <Button v-if="videoModule.getNext && !videoModule.isLoading" class="show-more" :disabled="videoModule.isLoading" @click="showMore(20)">Show more</Button>
         </div>
     </div>
 </template>
