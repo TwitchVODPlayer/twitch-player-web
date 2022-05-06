@@ -32,7 +32,10 @@ export function errorHandler(err: Error|ResponseError): Error|undefined {
 
     // refresh token
     if ((err as ResponseError).needRefresh) {
-        if (!userModule.isRefreshingToken) mainModule.reset().then(() => userModule.refreshToken()).then(() => router.replace({ name: "Dashboard" }))
+        if (!userModule.isRefreshingToken)
+            mainModule.reset()
+            .then(() => userModule.refreshToken())
+            .then(() => router.replace({ name: "Reload" }))
         return
     }
 

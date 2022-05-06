@@ -76,6 +76,7 @@ export class UserModule extends VuexModule {
         this.context.commit('setRefreshingToken', true)
         return refreshToken().then(data => {
             this.context.commit('loginSuccess', data.token)
+            this.loadUser()
         }).catch((err: Error) => {
             this.context.commit('loginFailure', err)
         }).then(() => {

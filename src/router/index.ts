@@ -4,7 +4,7 @@ import { userModule } from '../store/user'
 const routes: Array<RouteRecordRaw> = [
     {
         name: "Login",
-        path: '/login',
+        path: "/login",
         beforeEnter: (to) => {
             if (!to.query.code) return { name: 'Dashboard' }
             return userModule.login({
@@ -17,31 +17,36 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         name: "Dashboard",
-        path: '/',
+        path: "/",
         component: () => import('../views/Dashboard.vue')
     },
     {
         name: "VOD",
-        path: '/vod/:vodId',
+        path: "/vod/:vodId",
         props: true,
         component: () => import('../views/VOD.vue')
     },
     {
         name: "Profile",
-        path: '/profile',
+        path: "/profile",
         component: () => import('../views/Profile.vue'),
         meta: { requiresAuth: true }
     },
     {
         name: "Videos",
-        path: '/videos/:login',
+        path: "/videos/:login",
         props: true,
         component: () => import('../views/Videos.vue'),
         meta: { requiresAuth: true }
     },
     {
+        name: "Reload",
+        path: "/reload",
+        component: () => import('../views/Reload.vue')
+    },
+    {
         name: "NotFound",
-        path: '/:pathMatch(.*)*',
+        path: "/:pathMatch(.*)*",
         component: () => import('../views/NotFound.vue')
     }
 ]
