@@ -29,7 +29,10 @@ onBeforeMount(() => {
                 class="follow"
             >
                 <router-link :to="`/videos/${follow.login}`" :title="follow.login">
-                    <img :src="follow.profile_image_url" class="profile-image">
+                    <div class="follow-container">
+                        <img class="follow-image profile-image" :src="follow.profile_image_url">
+                        <div class="follow-background"></div>
+                    </div>
                 </router-link>
                 <router-link :to="`/videos/${follow.login}`" :title="follow.display_name">
                     <p class="username">{{follow.display_name}}</p>
@@ -83,8 +86,38 @@ onBeforeMount(() => {
 .follows .follow .username {
     margin-top: .5rem;
 }
-.follows .follow img {
+.follows .follow .follow-container {
     width: 5rem;
+    height: 5rem;
+    margin: auto;
+    position: relative;
+}
+.follows .follow .follow-container > * {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transition-delay: 75ms;
+    transition-duration: 100ms;
+}
+.follow-image:hover ~ .follow-background {
+    transform: scale(1) !important;
+    transition-delay: 75ms;
+    transition-duration: 100ms;
+}
+.follows .follow .follow-background {
+    z-index: 1;
+    transform: scale(.9);
+    background-color: var(--primary-color);
+}
+.follows .follow .follow-image {
+    z-index: 2;
+    background-color: var(--background-color);
+}
+.follows .follow .follow-image:hover {
+    transform: translate3d(.3rem, -.3rem, 0);
 }
 .show-more {
     margin-top: 2rem;

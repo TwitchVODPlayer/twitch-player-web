@@ -86,7 +86,6 @@ const onSelect = function(value: number) {
     font-size: .9rem;
     position: absolute;
     margin-top: .5rem;
-    /* display: inline-block; */
     text-align: start;
     min-width: 8rem;
     max-width: 90vw;
@@ -101,6 +100,9 @@ const onSelect = function(value: number) {
 }
 .select .option.selected {
     background-color: var(--select-color);
+}
+.select .dialog {
+    border-radius: .3rem
 }
 </style>
 
