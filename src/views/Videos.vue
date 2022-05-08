@@ -52,7 +52,8 @@ const getLongDate = function(date: string): string {
 const getDuration = function(duration: string): string {
     duration = duration.replace('s', '')
     if (!duration.match(/h|m/g)) return `0:${duration.padStart(2, '0')}`
-    return duration.replace(/h|m/g, ':')
+    const splits = duration.split(/h|m/g)
+    return `${splits[0]}:${splits[1].padStart(2, '0')}:${splits[2].padStart(2, '0')}`
 }
 
 const getViewsString = function(views: number): string {
