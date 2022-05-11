@@ -13,7 +13,7 @@ const props = defineProps({
     }
 })
 
-const vodSource = computed(() => getPlaylistApiUrl(vodModule.vod))
+const vodSource = computed(() => getPlaylistApiUrl(vodModule.getVod))
 
 watch(() => props.vodId, () => {
     setVod()

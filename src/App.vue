@@ -4,11 +4,14 @@ import { userModule } from './store/user'
 
 import Navbar from './components/Navbar.vue'
 import Loading from './components/Loading.vue'
+import { historyModule } from './store/history';
 
 onBeforeMount(() => {
     userModule.loadToken().then(token => {
         if (!token) return
-        userModule.loadUser()
+        userModule.loadUser().then(() => {
+            historyModule.loadHistory()
+        })
     })
 })
 </script>

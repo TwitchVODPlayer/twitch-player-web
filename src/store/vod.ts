@@ -13,7 +13,7 @@ export class VODModule extends VuexModule {
 
 
     /* Getters */
-    get vod(): number|undefined {
+    get getVod(): number|undefined {
         return this.vod_id
     }
     get isValid(): boolean {

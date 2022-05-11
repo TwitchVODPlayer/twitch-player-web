@@ -32,6 +32,15 @@ interface VideosResponse {
 }
 
 interface Option {
-    value: string | number
+    value: string|number
     label: any
+}
+
+interface VODHistory {
+    vod_id: string|number
+    start: number
+}
+
+interface HistoryResponse {
+    history: Array<VODHistory>|null
 }

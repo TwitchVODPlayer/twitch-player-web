@@ -52,7 +52,9 @@ const getLongDate = function(date: string): string {
 const getDuration = function(duration: string): string {
     duration = duration.replace('s', '')
     if (!duration.match(/h|m/g)) return `0:${duration.padStart(2, '0')}`
-    return duration.replace(/h|m/g, ':')
+    const splits = duration.split(/h|m/g)
+    const hours = splits.splice(0, 1)
+    return `${hours}:${splits.map(s => s.padStart(2, '0')).join(':')}`
 }
 
 const getViewsString = function(views: number): string {
@@ -115,6 +117,7 @@ onBeforeMount(() => {
                             <div class="left"></div>
                             <div class="bottom"></div>
                             <div class="right"></div>
+                            <div class="progress"></div>
                             <div class="preview">
                                 <img :src="getThumbnail(video.thumbnail_url, 320, 180)">
                                 <div class="duration">
@@ -312,6 +315,14 @@ onBeforeMount(() => {
 }
 a > .previews span {
     color: var(--text-color);
+}
+.videos .video .preview .progress {
+    width: 64.8134%;
+    max-width: 100%;
+    height: 100%;
+    background: var(--color-background-progress-overlay-status);
+    animation-timing-function: linear;
+    animation-fill-mode: both;
 }
 </style>
 
