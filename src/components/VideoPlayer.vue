@@ -2,6 +2,7 @@
 import { onBeforeMount, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue'
 import Plyr from 'plyr'
 import Hls, { Level } from 'hls.js'
+import { historyModule } from '../store/history'
 import { userModule } from '../store/user'
 import { error } from '../utils/popup'
 
@@ -43,7 +44,7 @@ const setSource = function () {
         })
     })
 
-    hls.value.on(Hls.Events.LEVEL_SWITCHED, (_event, data) => {
+    hls.value.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
         if (!hls.value) return
         const span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
         if (!span) return
@@ -53,6 +54,10 @@ const setSource = function () {
 
     hls.value.on(Hls.Events.ERROR, (_, data) => {
         error(new Error(JSON.parse(data.networkDetails.response).message))
+    })
+
+    hls.value.on(Hls.Events.FRAG_CHANGED, (_, data) => {
+        historyModule.setWatchtime(data.frag.start)
     })
 
     hls.value.attachMedia(videoRef.value as HTMLMediaElement)
@@ -77,7 +82,8 @@ onBeforeMount(() => {
 
 onMounted(() => {
     hls.value = new Hls({
-        xhrSetup: xhr => xhr.setRequestHeader('Authorization', `Bearer ${userModule.getAccessToken}`)
+        xhrSetup: xhr => xhr.setRequestHeader('Authorization', `Bearer ${userModule.getAccessToken}`),
+        startPosition: historyModule.getVodStart
     })
     setSource()
 })
