@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, Ref, ref } from 'vue'
 import { videoModule } from '../store/video'
+import { historyModule } from '../store/history'
 import { useRouter } from 'vue-router'
 import moment from 'moment'
 
@@ -39,6 +40,11 @@ const filterOptions: Ref<Array<Option>> = ref([
 ])
 
 const videos = computed(() => videoModule.getVideos)
+
+const videoPercent = function(video: Video) {
+    const durations = video.duration.split(/h|m|s/).filter(e => e != '').reverse().reduce((t, d, i) => t + (Number(d) * 60**i), 0)
+    return historyModule.getVodStart(Number(video.id)) / Number(durations) * 100
+}
 
 const getThumbnail = function(url: string, width: number, height: number): string {
     if (!url) return DEFAULT_PREVIEW_URL
@@ -117,7 +123,6 @@ onBeforeMount(() => {
                             <div class="left"></div>
                             <div class="bottom"></div>
                             <div class="right"></div>
-                            <div class="progress"></div>
                             <div class="preview">
                                 <img :src="getThumbnail(video.thumbnail_url, 320, 180)">
                                 <div class="duration">
@@ -128,6 +133,9 @@ onBeforeMount(() => {
                                 </div>
                                 <div class="date">
                                     <span>{{getDateAgo(video.published_at)}}</span>
+                                </div>
+                                <div class="progress" v-if="videoPercent(video) > 0">
+                                    <div class="bar" :style="{ width: `${videoPercent(video)}%` }"></div>
                                 </div>
                             </div>
                         </div>
@@ -317,10 +325,21 @@ a > .previews span {
     color: var(--text-color);
 }
 .videos .video .preview .progress {
-    width: 64.8134%;
+    pointer-events: none;
+    position: absolute;
+    bottom: .25rem;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow: hidden;
+    height: 0.4rem;
+    background: #00000066;
+}
+.videos .video .preview .progress .bar {
     max-width: 100%;
     height: 100%;
-    background: var(--color-background-progress-overlay-status);
+    background: var(--primary-color);
     animation-timing-function: linear;
     animation-fill-mode: both;
 }

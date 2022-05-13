@@ -21,7 +21,7 @@ export class HistoryModule extends VuexModule {
         return this.history != null
     }
     get getVodStart() {
-        return this.getHistory?.find(h => h.vod_id == this.context.rootGetters['vod/getVod'])?.start || 0
+        return (vod_id: number = this.context.rootGetters['vod/getVod']) => this.getHistory?.find(h => h.vod_id == vod_id)?.start || 0
     }
     
 

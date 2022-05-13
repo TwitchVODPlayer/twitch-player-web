@@ -83,7 +83,7 @@ onBeforeMount(() => {
 onMounted(() => {
     hls.value = new Hls({
         xhrSetup: xhr => xhr.setRequestHeader('Authorization', `Bearer ${userModule.getAccessToken}`),
-        startPosition: historyModule.getVodStart
+        startPosition: historyModule.getVodStart()
     })
     setSource()
 })
