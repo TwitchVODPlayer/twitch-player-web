@@ -333,7 +333,7 @@ a > .previews span {
     height: 100%;
     display: flex;
     overflow: hidden;
-    height: 0.4rem;
+    height: 0.3rem;
     background: #00000066;
 }
 .videos .video .preview .progress .bar {

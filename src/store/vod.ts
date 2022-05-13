@@ -8,11 +8,15 @@ import { ResponseError } from '../utils/error'
 @Module({ name: "vod", dynamic: true, namespaced: true, store })
 export class VODModule extends VuexModule {
     /* States */
+    loading: boolean = false
     vod_id?: number
     valid: boolean = false
 
 
     /* Getters */
+    get isLoading(): boolean {
+        return this.loading
+    }
     get getVod(): number|undefined {
         return this.vod_id
     }
@@ -25,7 +29,7 @@ export class VODModule extends VuexModule {
     @Action
     setVod(vod_id?: number|string) {
         if (!vod_id || isNaN(Number(vod_id))) return this.context.commit('setVodFailure', new ResponseError({ error: "Not Found", message: "Invalid VOD id", status: 404 }))
-        mainModule.setLoading(true)
+        this.setLoading(true)
         verifyVodId(vod_id).then(() => {
             this.context.commit('setVodSuccess', Number(vod_id))
             this.context.commit('setValid', true)
@@ -33,7 +37,7 @@ export class VODModule extends VuexModule {
             this.context.commit('setVodFailure', err)
             this.context.commit('setValid', false)
         }).then(() => {
-            mainModule.setLoading(false)
+            this.setLoading(false)
         })
     }
 
@@ -43,6 +47,10 @@ export class VODModule extends VuexModule {
     reset() {
         this.vod_id = undefined
         this.valid = false
+    }
+    @Mutation
+    setLoading(value: boolean) {
+        this.loading = value
     }
     @Mutation
     setVodSuccess(vod_id: number|undefined) {
