@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue'
-import Plyr from 'plyr'
-import Hls, { Level } from 'hls.js'
+
 import { historyModule } from '../store/history'
 import { userModule } from '../store/user'
 import { error } from '../utils/popup'
+import Plyr from 'plyr'
+import Hls, { Level } from 'hls.js'
+
+import Logo from '../assets/img/logo.svg'
 
 const props = defineProps({
     options: {
@@ -17,11 +20,13 @@ const props = defineProps({
 const player: Ref<Plyr | null> = ref(null)
 const hls: Ref<Hls | null> = ref(null)
 const videoRef: Ref<HTMLElement | string> = ref("videoRef")
+const loading: Ref<boolean> = ref(false)
 
 watch(() => props.source, () => setSource())
 
 const setSource = function () {
     if (!hls.value || !props.source) return
+    loading.value = true
 
     hls.value.loadSource(props.source)
 
@@ -58,6 +63,7 @@ const setSource = function () {
 
     hls.value.on(Hls.Events.FRAG_CHANGED, (_, data) => {
         historyModule.setWatchtime(data.frag.start)
+        loading.value = false
     })
 
     hls.value.attachMedia(videoRef.value as HTMLMediaElement)
@@ -83,7 +89,7 @@ onBeforeMount(() => {
 onMounted(() => {
     hls.value = new Hls({
         xhrSetup: xhr => xhr.setRequestHeader('Authorization', `Bearer ${userModule.getAccessToken}`),
-        startPosition: historyModule.getVodStart
+        startPosition: historyModule.getVodStart()
     })
     setSource()
 })
@@ -95,8 +101,11 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="video">
+    <div :class="{ video: true, loaded: !loading }">
         <video ref="videoRef"></video>
+        <div v-if="loading" class="loading-container">
+            <Logo class="loading" />
+        </div>
     </div>
 </template>
 
@@ -105,5 +114,25 @@ onBeforeUnmount(() => {
     max-width: 1280px !important;
     max-height: 720px !important;
     margin: 2rem auto;
+    position: relative;
+}
+.video .loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    vertical-align: middle;
+}
+.video .loading-container .loading {
+    width: 4rem;
+    margin: auto;
+}
+</style>
+
+<style>
+.video:not(.loaded) [class*="plyr__control"] {
+    display: none;
 }
 </style>

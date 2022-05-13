@@ -32,10 +32,9 @@ export function errorHandler(err: Error|ResponseError): Error|undefined {
 
     // refresh token
     if ((err as ResponseError).needRefresh) {
-        if (!userModule.isRefreshingToken)
-            mainModule.reset()
-            .then(() => userModule.refreshToken())
-            .then(() => router.replace({ name: "Reload" }))
+        if (!userModule.isRefreshingToken) {
+            mainModule.reset().then(() => router.replace({ name: "Reload", query: { next: router.currentRoute.value.fullPath }}))
+        }
         return
     }
 

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { onBeforeMount } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import { followModule } from '../store/follow'
 
 import Logo from '../assets/img/logo.svg'

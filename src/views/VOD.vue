@@ -29,6 +29,14 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <VideoPlayer v-if="vodModule.isValid" :source="vodSource" />
-    <Error v-else title="" :message="`No VOD found with id ${vodId}`" />
+    <span v-if="vodModule.isLoading"></span>
+    <Error v-else-if="!vodModule.isValid" title="" :message="`No VOD found with id ${vodId}`" />
+    <VideoPlayer v-else :source="vodSource" />
 </template>
+
+<style scoped>
+.loading {
+    margin-top: 2rem;
+    width: 4rem;
+}
+</style>
