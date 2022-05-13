@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
-import { userModule } from './store/user'
 
 import Navbar from './components/Navbar.vue'
 import Loading from './components/Loading.vue'
-import { historyModule } from './store/history';
+import { mainModule } from './store/main'
+import './store/history'
+import './store/user'
+import './store/follow'
+import './store/video'
+import './store/vod'
 
 onBeforeMount(() => {
-    userModule.loadToken().then(token => {
-        if (!token) return
-        userModule.loadUser().then(() => {
-            historyModule.loadHistory()
-        })
-    })
+    mainModule.load()
 })
 </script>
 

@@ -1,10 +1,5 @@
 import { VuexModule, Module, Mutation, getModule, Action } from 'vuex-module-decorators'
 import store from '.'
-import { userModule } from './user'
-import { followModule } from './follow'
-import { videoModule } from './video'
-import { vodModule } from './vod'
-import { historyModule } from './history'
 
 @Module({ name: "main", dynamic: true, namespaced: true, store })
 export class MainModule extends VuexModule {
@@ -18,11 +13,20 @@ export class MainModule extends VuexModule {
     /* Actions */
     @Action
     async reset() {
-        userModule.reset()
-        followModule.reset()
-        videoModule.reset()
-        vodModule.reset()
-        historyModule.reset()
+        this.context.commit('user/reset', null, { root: true })
+        this.context.commit('follow/reset', null, { root: true })
+        this.context.commit('video/reset', null, { root: true })
+        this.context.commit('vod/reset', null, { root: true })
+        this.context.commit('history/reset', null, { root: true })
+        return this.load(true)
+    }
+    @Action
+    async load(reload: boolean = false) {
+        this.setLoading(true)
+        await this.context.dispatch(`user/${reload ? 'refreshToken' : 'loadToken'}`, null, { root: true })
+        await this.context.dispatch('user/loadUser', null, { root: true })
+        await this.context.dispatch('history/loadHistory', null, { root: true })
+        this.setLoading(false)
     }
 
 

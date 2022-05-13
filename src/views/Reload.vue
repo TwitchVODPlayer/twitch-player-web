@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 onBeforeMount(() => {
-    useRouter().replace({ name: "Dashboard" })
+    router.replace({ path: String(router.currentRoute.value.query.next || '/') })
 })
 </script>
 
