@@ -5,7 +5,7 @@ import { userModule } from '../store/user'
 
 import Search from './Search.vue'
 import Button from './Button.vue'
-import Logo from '../assets/img/logo.svg'
+import Icon from './Icon.vue'
 
 const router = useRouter()
 const vodId: Ref<string> = ref("")
@@ -24,7 +24,7 @@ onBeforeMount(() => {
     <nav id="navbar">
         <div class="navbar navbar-left">
             <router-link to="/" class="navbar-item">
-                <Logo class="logo" />
+                <Icon name="logo" class="logo" />
             </router-link>
         </div>
         <div class="navbar navbar-center">

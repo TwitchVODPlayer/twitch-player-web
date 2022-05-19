@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { mainModule } from '../store/main'
 
-import ErrorImage from '../assets/img/error.svg'
 import Button from './Button.vue'
+import Icon from './Icon.vue'
 
 const props = defineProps({
     title: {
@@ -19,7 +19,7 @@ const props = defineProps({
 <template>
     <div id="error" v-if="!mainModule.isLoading">
         <div class="not-found">
-            <ErrorImage class="image" />
+            <Icon name="error" class="image" />
             <h1 v-if="props.title">{{props.title}}</h1>
             <p v-if="props.message" class="details">{{props.message}}</p>
             <Button class="back" @click="$router.back()">Go back</Button>

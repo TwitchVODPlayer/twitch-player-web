@@ -1,5 +1,5 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
-import { getVideos } from '../api/vod'
+import { getPlaylist, getVideos } from '../api/vod'
 import { getUser } from '../api/user'
 import { error } from '../utils/popup'
 import store from '.'
@@ -66,6 +66,11 @@ export class VideoModule extends VuexModule {
         }).then(() => {
             store.commit('main/setLoading', false)
         })
+    }
+    @Action
+    async getPlaylistM3U8(vod_id: number) {
+        if (!store.getters['user/getAccessToken']) return
+        return getPlaylist(vod_id)
     }
 
 

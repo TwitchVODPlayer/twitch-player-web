@@ -47,7 +47,7 @@ export class UserModule extends VuexModule {
     }
     @Action
     async loadUser() {
-        if (!this.getAccessToken) return this.context.commit('loadUserFailure', new Error('Access token cannot be null'))
+        if (!this.isLogged) return
         store.commit('main/setLoading', true)
         return getUser().then(user => {
             this.context.commit('loadUserSuccess', user)

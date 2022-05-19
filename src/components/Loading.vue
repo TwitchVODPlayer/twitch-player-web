@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+
 import { mainModule } from '../store/main'
-import Logo from '../assets/img/logo.svg'
+
+import Icon from './icon.vue'
 
 const isLoading = computed(() => mainModule.isLoading)
 
@@ -9,7 +11,7 @@ const isLoading = computed(() => mainModule.isLoading)
 
 <template>
     <div id="loading" v-if="isLoading">
-        <Logo class="loading-logo" />
+        <Icon name="logo" class="loading-logo" />
     </div>
 </template>
 

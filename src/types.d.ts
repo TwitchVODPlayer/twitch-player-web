@@ -31,9 +31,16 @@ interface VideosResponse {
     next: string
 }
 
-interface Option {
+interface SelectOption {
+    label: string|number
     value: string|number
-    label: any
+}
+
+interface DropdownItem {
+    label: string|number
+    icon?: string
+    action?: Function
+    children?: Array<DropdownItem>
 }
 
 interface VODHistory {
@@ -43,4 +50,9 @@ interface VODHistory {
 
 interface HistoryResponse {
     history: Array<VODHistory>|null
+}
+
+interface m3u8Url {
+    quality: string
+    url: string
 }

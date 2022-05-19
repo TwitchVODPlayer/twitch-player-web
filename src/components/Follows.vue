@@ -2,8 +2,8 @@
 import { computed, onBeforeMount } from 'vue'
 import { followModule } from '../store/follow'
 
-import Logo from '../assets/img/logo.svg'
 import Button from './Button.vue'
+import Icon from './Icon.vue'
 
 const follows = computed(() => followModule.getFollows)
 
@@ -19,7 +19,7 @@ onBeforeMount(() => {
 
 <template>
     <h2>Followed channels</h2>
-    <Logo v-if="!followModule.getFollows" class="loading" />
+    <Icon v-if="!followModule.getFollows" name="logo" class="loading" />
     <div v-else>
         <div class="follows">
             <div
@@ -38,7 +38,7 @@ onBeforeMount(() => {
                 </router-link>
             </div>
         </div>
-        <Logo v-if="followModule.isLoading" class="loading small" />
+        <Icon v-if="followModule.isLoading" name="logo" class="loading small" />
         <div class="buttons-group">
             <Button v-if="followModule.getNext && !followModule.isLoading" class="show-more" :disabled="followModule.isLoading" @click="showMore(20)">Show more</Button>
         </div>
