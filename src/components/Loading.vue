@@ -3,7 +3,7 @@ import { computed } from 'vue'
 
 import { mainModule } from '../store/main'
 
-import Icon from './icon.vue'
+import Icon from './Icon.vue'
 
 const isLoading = computed(() => mainModule.isLoading)
 
