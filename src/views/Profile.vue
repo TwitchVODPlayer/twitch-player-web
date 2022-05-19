@@ -3,9 +3,9 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { userModule } from '../store/user'
 import { historyModule } from '../store/history'
-import AlertIcon from '../assets/img/alert.svg'
 
 import Button from '../components/Button.vue'
+import Toggle from '../components/Toggle.vue'
 
 const router = useRouter()
 
@@ -24,15 +24,7 @@ const logout = function() {
             <img :src="profile?.profile_image_url" class="profile-image">
             <p>{{profile?.display_name}}</p>
             <p>{{profile?.description}}</p>
-            <p>
-                <Button @click="historyModule.toggleHistory">{{historyModule.isEnabled ? 'Disable' : 'Enable'}} history</Button>
-                <div class="experimental">
-                    <small>
-                        <AlertIcon class="icon" />
-                        <span>This feature is experimental! It may change at any time.</span>
-                    </small>
-                </div>
-            </p>
+            <p><Toggle label="History" :checked="historyModule.isEnabled" :disabled="historyModule.isLoading" @toggle="historyModule.toggleHistory" /></p>
             <Button @click="logout">Logout</Button>
         </div>
     </div>

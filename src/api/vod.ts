@@ -8,6 +8,18 @@ export async function verifyVodId(vod_id: string|number) {
     })
 }
 
+export async function getPlaylist(vod_id: string|number) {
+    return fetch(`${import.meta.env.VITE_SERVER_BASE_URL}/api/m3u8/${vod_id}/playlist/`, {
+        headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` }
+    }).then(res => {
+        if (!res.ok) return res.json()
+        return res.text()
+    }).then(res => {
+        if (res.error) throw new ResponseError(res)
+        return res
+    })
+}
+
 export async function getVideos({ login, next, first, filter }: { login: string, next?: string, first?: number, filter?: string}) {
     const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/twitch/videos/${login}`)
     url.search = new URLSearchParams(JSON.parse(JSON.stringify({ next, first, filter }))).toString()

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, onMounted, Ref, ref, watch } from 'vue'
+import Plyr from 'plyr'
+import Hls, { Level } from 'hls.js'
 
 import { historyModule } from '../store/history'
 import { userModule } from '../store/user'
 import { error } from '../utils/popup'
-import Plyr from 'plyr'
-import Hls, { Level } from 'hls.js'
 
-import Logo from '../assets/img/logo.svg'
+import Icon from './Icon.vue'
 
 const props = defineProps({
     options: {
@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
     <div :class="{ video: true, loaded: !loading }">
         <video ref="videoRef"></video>
         <div v-if="loading" class="loading-container">
-            <Logo class="loading" />
+            <Icon name="logo" class="loading" />
         </div>
     </div>
 </template>

@@ -38,7 +38,7 @@ const onClick = () => {
     font-size: .9rem;
     height: auto;
     color: var(--text-color);
-    padding: .25em .8em;
+    padding: .35em .7em;
     cursor: pointer;
     transition: border 100ms ease-in, background-color 100ms ease-in;
 }
@@ -62,6 +62,5 @@ const onClick = () => {
 .button .icon > svg {
     width: 1.5rem;
     margin: auto;
-    fill: currentColor;
 }
 </style>

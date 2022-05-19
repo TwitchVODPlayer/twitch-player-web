@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, Ref, ref } from 'vue'
-import ArrowIcon from '../assets/img/arrow.svg'
+
 import Button from '../components/Button.vue'
+import Icon from '../components/Icon.vue'
 
 
 const emit = defineEmits(['select'])
 const props = defineProps({
     label: String,
     options: {
-        type: Array as () => Array<Option>,
+        type: Array as () => Array<SelectOption>,
         required: true
     }
 })
@@ -45,8 +46,8 @@ const onSelect = function(value: number) {
                 @click="openDialog"
                 tabindex="0"
             >
-                <span>{{selectedOption.label}}</span>
-                <ArrowIcon class="icon" />
+                <span>{{selectedOption?.label}}</span>
+                <Icon name="arrow" class="icon" />
             </Button>
             <div
                 v-if="showOptions"
@@ -74,7 +75,6 @@ const onSelect = function(value: number) {
 }
 .select .icon {
     width: 1.2rem;
-    fill: var(--text-color);
     margin-left: .4rem;
 }
 .select > .label {

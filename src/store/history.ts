@@ -28,6 +28,7 @@ export class HistoryModule extends VuexModule {
     /* Actions */
     @Action
     async loadHistory() {
+        if (!this.context.rootGetters['user/isLogged']) return
         return getHistory().then(data => {
             this.context.commit('loadHistorySuccess', data)
         }).catch((err: Error) => {
@@ -36,6 +37,7 @@ export class HistoryModule extends VuexModule {
     }
     @Action
     async toggleHistory() {
+        this.context.commit('setLoading', true)
         return toggleHistory(!this.isEnabled).then(data => {
             this.context.commit('loadHistorySuccess', data)
         }).catch((err: Error) => {

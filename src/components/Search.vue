@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Ref, ref } from 'vue'
-import SearchIcon from '../assets/img/search.svg'
+
+import Icon from './Icon.vue'
 
 const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
@@ -36,7 +37,7 @@ const onInput = function() {
         </div>
         <div class="search-icon">
             <button class="search-button" :disabled="disabledButton" @click="updateValue">
-                <SearchIcon />
+                <Icon name="search" />
             </button>
         </div>
     </div>
@@ -112,6 +113,5 @@ const onInput = function() {
 }
 #search .search-icon svg {
     width: 1.5rem;
-    fill: var(--text-color);
 }
 </style>

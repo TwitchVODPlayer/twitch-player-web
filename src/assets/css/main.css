@@ -34,6 +34,10 @@ a:hover {
     color: var(--link-hover-color) !important;
 }
 
+svg {
+    fill: currentColor
+}
+
 svg * {
     transform-box: fill-box;
 }
