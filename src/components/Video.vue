@@ -4,10 +4,11 @@ import moment from 'moment'
 
 import { videoModule } from '../store/video'
 import { historyModule } from '../store/history'
+import { success } from '../utils/popup'
+import { getPlaylistApiUrl } from '../api/vod'
 
 import Icon from './Icon.vue'
 import Dropdown from './Dropdown.vue'
-import { success } from '../utils/popup'
 
 
 const DEFAULT_PREVIEW_URL = "https://vod-secure.twitch.tv/_404/404_processing_320x180.png"
@@ -32,6 +33,7 @@ const props = defineProps<{
     video: Video
 }>()
 
+const m3u8Url: Ref<string> = ref('')
 const m3u8List: Ref<Array<m3u8Url>> = ref([])
 const loadingDropdown: Ref<boolean> = ref(true)
 
@@ -39,10 +41,16 @@ const qualityOptions = computed((): Array<DropdownItem> => [
     {
         label: 'Copy url',
         icon: 'copy',
-        children: m3u8List.value.map(m3u8 => ({
-            label: m3u8.quality,
-            action: () => copyString(m3u8.url)
-        }))
+        children: [
+            {
+                label: 'Auto',
+                action: () => copyString(m3u8Url.value)
+            },
+            ...m3u8List.value.map(m3u8 => ({
+                label: m3u8.quality,
+                action: () => copyString(m3u8.url)
+            }))
+        ]
     }
 ])
 
@@ -52,6 +60,7 @@ const copyString = function(str: string) {
 }
 
 const loadPlaylist = function(vod_id: number) {
+    m3u8Url.value = getPlaylistApiUrl(vod_id)
     videoModule.getPlaylistM3U8(vod_id).then(m3u8 => {
         m3u8List.value = parsem3u8(m3u8)
         loadingDropdown.value = false

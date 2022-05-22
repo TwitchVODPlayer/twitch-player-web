@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref } from 'vue'
+import { onMounted, ref, Ref } from 'vue'
 import DropdownItem from './DropdownItem.vue'
 import Icon from './Icon.vue'
 
@@ -12,6 +12,7 @@ const props = defineProps<{
 }>()
 
 const showItems: Ref<boolean> = ref(false)
+const dialog: Ref<HTMLElement|null> = ref(null)
 
 const openDialog = function() {
     showItems.value = true
@@ -22,6 +23,12 @@ const onClickOutside = function() {
     showItems.value = false
     emit('close')
 }
+
+onMounted(() => {
+    const rect = dialog.value?.getBoundingClientRect()
+    if (Number(rect?.x) + Number(rect?.width) > window.innerWidth) dialog.value?.classList.add('left')
+    else dialog.value?.classList.remove('left')
+})
 </script>
 
 <template>
@@ -39,6 +46,7 @@ const onClickOutside = function() {
                 v-if="showItems || noTrigger"
                 v-click-outside="onClickOutside"
                 class="dialog"
+                ref="dialog"
             >
                 <div class="container">
                     <div v-if="loading" class="load">
@@ -105,5 +113,8 @@ const onClickOutside = function() {
 .dropdown .dialog .dropdown .dialog {
     inset: auto auto auto 102% !important;
     margin-top: -2.85rem;
+}
+.dropdown .dialog .dropdown .dialog.left {
+    inset: auto auto auto -120% !important;
 }
 </style>
