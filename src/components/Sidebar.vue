@@ -35,7 +35,7 @@ const extended: Ref<boolean> = ref(false)
 <style scoped>
 #sidebar {
     background-color: var(--sidebar-color);
-    width: 3rem !important;
+    width: 3rem;
     height: 100% !important;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,7 @@ const extended: Ref<boolean> = ref(false)
 @media screen and (max-width: 540px) {
     #sidebar {
         height: 3.5rem !important;
-        width: 100% !important;
+        width: 100%;
         bottom: 0 !important;
         top: unset;
     }
@@ -62,6 +62,13 @@ const extended: Ref<boolean> = ref(false)
     .sidebar .items {
         flex-direction: row !important;
         justify-content: space-evenly;
+    }
+    .sidebar .item:hover {
+        background-color: inherit;
+        color: inherit !important;
+    }
+    .sidebar .item .icon:hover {
+        background-color: inherit;
     }
 }
 .sidebar {
