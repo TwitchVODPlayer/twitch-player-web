@@ -1,6 +1,7 @@
 :root {
     --background-color: #0e0e10;
     --navbar-color: #18181b;
+    --sidebar-color: #1f1f23;
     --dialog-color: #18181b;
 
     --primary-color: #a970ff;
@@ -11,7 +12,7 @@
     --background-input-color: #464649;
     --background-input-color-darker: #3a3a3d;
     --border-input-color-hover: #5d5d5f;
-    --loading-background-color: #00000066;
+    --loading-background-color: #00000077;
     --overlay-background-color: #00000099;
 
     --error-color: #eb0400;
@@ -34,8 +35,15 @@ a:hover {
     color: var(--link-hover-color) !important;
 }
 
+a.item {
+    padding: .3rem;
+}
+a.item:hover {
+    background-color: var(--background-input-color);
+}
+
 svg {
-    fill: currentColor
+    fill: currentColor;
 }
 
 svg * {
@@ -46,21 +54,59 @@ h1, h2, h3, h4 {
     margin-bottom: 3rem;
 }
 
-@keyframes rotate-third {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(120deg); }
-}
-
 .content {
     max-width: 70%;
-    margin: 4rem auto;
-}
-
-#loading .arrow, .loading > .arrow {
-    transform-origin: 27px 46px;
-    animation: .8s rotate-third cubic-bezier(0.23, .7, 0.320, 1) infinite;
+    margin: 6rem auto;
 }
 
 .profile-image {
     border-radius: 50%;
+}
+
+.videos {
+    display: grid;
+    grid-gap: 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    transition: .5s;
+    width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+    .videos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .videos {
+        grid-template-columns: 1fr
+    }
+}
+
+#loading .loading .arrow {
+    transform-origin: 27px 46px;
+    animation: .8s rotate-third cubic-bezier(0.23, .7, 0.320, 1) infinite;
+}
+.loading {
+    position: relative;
+    animation: rotate 1.5s linear infinite;
+    margin: 2rem auto;
+    width: 3rem;
+}
+#loading .loading {
+    animation: none;
+    width: 5rem;
+}
+.loading.small {
+    width: 2rem;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes rotate-third {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(120deg); }
 }

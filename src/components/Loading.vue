@@ -11,7 +11,7 @@ const isLoading = computed(() => mainModule.isLoading)
 
 <template>
     <div id="loading" v-if="isLoading">
-        <Icon name="logo" class="loading-logo" />
+        <Icon name="logo" class="loading" />
     </div>
 </template>
 
@@ -30,9 +30,5 @@ const isLoading = computed(() => mainModule.isLoading)
     justify-content: center;
     overflow: hidden;
     z-index: 9999;
-}
-.loading-logo {
-    position: relative;
-    width: 5em;
 }
 </style>

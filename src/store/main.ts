@@ -5,9 +5,13 @@ import store from '.'
 export class MainModule extends VuexModule {
     /* States */
     loading: boolean = false
+    loaded: boolean = false
 
     get isLoading(): boolean {
         return this.loading
+    }
+    get isLoaded(): boolean {
+        return this.loaded
     }
 
     /* Actions */
@@ -22,11 +26,14 @@ export class MainModule extends VuexModule {
     }
     @Action
     async load(reload: boolean = false) {
+        if (reload) this.setLoaded(false)
+        else if (this.isLoaded) return
         this.setLoading(true)
         await this.context.dispatch(`user/${reload ? 'refreshToken' : 'loadToken'}`, null, { root: true })
         await this.context.dispatch('user/loadUser', null, { root: true })
-        await this.context.dispatch('history/loadHistory', null, { root: true })
+        await this.context.dispatch('history/loadUserVideos', null, { root: true })
         this.setLoading(false)
+        this.setLoaded(true)
     }
 
 
@@ -34,6 +41,10 @@ export class MainModule extends VuexModule {
     @Mutation
     setLoading(value: boolean) {
         this.loading = value
+    }
+    @Mutation
+    setLoaded(value: boolean) {
+        this.loaded = value
     }
 }
 

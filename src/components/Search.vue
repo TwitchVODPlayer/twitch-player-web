@@ -37,7 +37,7 @@ const onInput = function() {
         </div>
         <div class="search-icon">
             <button class="search-button" :disabled="disabledButton" @click="updateValue">
-                <Icon name="search" />
+                <Icon name="search" class="icon" />
             </button>
         </div>
     </div>
@@ -100,6 +100,9 @@ const onInput = function() {
 }
 #search .search-icon:hover {
     background-color: var(--background-input-color);
+}
+#search .search-button .icon {
+    fill: var(--text-color);
 }
 #search .search-button {
     background-color: transparent;

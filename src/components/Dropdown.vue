@@ -94,11 +94,7 @@ onMounted(() => {
 .dropdown .options .dialog .load > svg {
     width: 1.45rem;
     padding: .4rem;
-    animation: rotate360 1.5s linear infinite;
-}
-@keyframes rotate360 {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    animation: rotate 1.5s linear infinite;
 }
 .dropdown .options .icon {
     width: 1.2rem;

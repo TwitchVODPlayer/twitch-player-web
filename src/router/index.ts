@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { mainModule } from '../store/main'
 import { userModule } from '../store/user'
 
 const routes: Array<RouteRecordRaw> = [
@@ -40,6 +41,18 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true }
     },
     {
+        name: "History",
+        path: "/history",
+        component: () => import('../views/History.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
+        name: "WatchLater",
+        path: "/watch-later",
+        component: () => import('../views/WatchLater.vue'),
+        meta: { requiresAuth: true }
+    },
+    {
         name: "Reload",
         path: "/reload",
         component: () => import('../views/Reload.vue')
@@ -57,9 +70,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _, next) => {
-    if (to.meta.requiresAuth && !userModule.isLogged) return next({ name: "Dashboard" })
+    mainModule.load().then(() => next())
 
-    return next()
+    if (to.meta.requiresAuth && !userModule.isLogged) return next({ name: "Dashboard" })
 })
 
 export default router

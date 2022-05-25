@@ -37,7 +37,14 @@ const m3u8Url: Ref<string> = ref('')
 const m3u8List: Ref<Array<m3u8Url>> = ref([])
 const loadingDropdown: Ref<boolean> = ref(true)
 
-const qualityOptions = computed((): Array<DropdownItem> => [
+const isInHistory = computed((): boolean => historyModule.isInHistory(Number(props.video.id)))
+const isInWatchLater = computed((): boolean => historyModule.isInWatchLater(Number(props.video.id)))
+const qualityOptions = computed((): Array<DropdownItem> => {
+    const items = [{
+        label: `${isInWatchLater.value ? 'Remove from' : 'Save to'} Watch Later`,
+        icon: 'watch',
+        action: () => historyModule.addWatchLater(Number(props.video.id))
+    },
     {
         label: 'Copy url',
         icon: 'copy',
@@ -49,10 +56,16 @@ const qualityOptions = computed((): Array<DropdownItem> => [
             ...m3u8List.value.map(m3u8 => ({
                 label: m3u8.quality,
                 action: () => copyString(m3u8.url)
-            }))
+            })).reverse()
         ]
-    }
-])
+    }]
+    if (isInHistory.value) items.unshift({
+        label: 'Remove from History',
+        icon: 'history',
+        action: () => historyModule.setWatchtime({ vod_id: Number(props.video.id), start: 0 })
+    })
+    return items
+})
 
 const copyString = function(str: string) {
     navigator.clipboard.writeText(str)
@@ -106,6 +119,11 @@ const getViewsString = function(views: number): string {
 const getDateAgo = function(date: string): string {
     return moment(new Date(date)).from(Date.now(), true)
 }
+
+const setWatchLater = function(event: Event) {
+    event.preventDefault()
+    historyModule.addWatchLater(Number(props.video.id))
+}
 </script>
 
 <template>
@@ -118,6 +136,12 @@ const getDateAgo = function(date: string): string {
                 <div class="right"></div>
                 <div class="preview">
                     <img :src="getThumbnail(props.video.thumbnail_url, 320, 180)">
+                    <div class="watchlater" :title="isInWatchLater ? 'Added' : 'Watch Later'">
+                        <span>
+                            <Icon v-if="isInWatchLater" name="checked" class="icon" @click="setWatchLater" />
+                            <Icon v-else name="watch" class="icon" @click="setWatchLater" />
+                        </span>
+                    </div>
                     <div class="duration">
                         <span>{{getDuration(props.video.duration)}}</span>
                     </div>
@@ -134,9 +158,9 @@ const getDateAgo = function(date: string): string {
             </div>
         </router-link>
         <div class="infos">
-            <router-link :to="`/videos/${videoModule.getUser?.login}`" :title="videoModule.getUser?.display_name">
+            <!-- <router-link :to="`/videos/${videoModule.getUser?.login}`" :title="videoModule.getUser?.display_name">
                 <img class="profile-image" :src="videoModule.getUser?.profile_image_url">
-            </router-link>
+            </router-link> -->
             <router-link :to="`/vod/${props.video.id}`" :title="props.video.title">
                 <p class="title">{{props.video.title}}</p>
             </router-link>
@@ -240,6 +264,16 @@ const getDateAgo = function(date: string): string {
     transform: scaleY(1);
     transition-delay: 75ms;
 }
+.video .preview .watchlater {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: .6rem;
+}
+.video .preview .watchlater .icon {
+    width: 1.5rem;
+    height: auto;
+}
 .video .preview .duration {
     position: absolute;
     top: 0;
@@ -258,9 +292,9 @@ const getDateAgo = function(date: string): string {
     right: 0;
     margin: .6rem;
 }
-.video .preview .duration > span, .video .preview .views > span, .video .preview .date > span {
+.video .preview .watchlater > span, .video .preview .duration > span, .video .preview .views > span, .video .preview .date > span {
     display: flex;
-    padding: .1rem 0.2rem;
+    padding: .15rem;
     align-items: center;
     justify-content: center;
     background: var(--overlay-background-color);
@@ -270,7 +304,7 @@ const getDateAgo = function(date: string): string {
 .video .infos {
     margin-top: .5rem;
     display: grid;
-    grid-template-columns: 3rem auto 2rem;
+    grid-template-columns: auto 2rem;
     gap: .7rem
 }
 .video .infos .profile-image {

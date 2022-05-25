@@ -47,6 +47,9 @@ const setSource = function () {
                 }
             }
         })
+        player.value.on('ended', () => {
+            historyModule.setWatchtime({ start: 0 })
+        })
     })
 
     hls.value.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
@@ -62,7 +65,7 @@ const setSource = function () {
     })
 
     hls.value.on(Hls.Events.FRAG_CHANGED, (_, data) => {
-        historyModule.setWatchtime(data.frag.start)
+        historyModule.setWatchtime({ start: data.frag.start })
         loading.value = false
     })
 
@@ -104,7 +107,7 @@ onBeforeUnmount(() => {
     <div :class="{ video: true, loaded: !loading }">
         <video ref="videoRef"></video>
         <div v-if="loading" class="loading-container">
-            <Icon name="logo" class="loading" />
+            <Icon name="loading" class="loading" />
         </div>
     </div>
 </template>
@@ -124,10 +127,6 @@ onBeforeUnmount(() => {
     height: 100%;
     display: flex;
     vertical-align: middle;
-}
-.video .loading-container .loading {
-    width: 4rem;
-    margin: auto;
 }
 </style>
 

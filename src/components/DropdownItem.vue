@@ -22,13 +22,15 @@ const showChildren: Ref<boolean> = ref(false)
 <template>
     <div
         @click="event => option.action?.(event)"
-        @mouseover="showChildren = true"
         @mouseleave="showChildren = false"
         class="options"
         tabindex="0"
     >
         <slot name="option">
-            <div class="item">
+            <div
+                class="item"
+                @mouseover="showChildren = true"
+            >
                 <button class="button">
                     <div class="elements">
                         <Icon v-if="option.icon" :name="option.icon" />
@@ -73,9 +75,11 @@ const showChildren: Ref<boolean> = ref(false)
     display: flex;
     gap: .5rem;
     padding: .4rem;
+    align-items: center;
 }
 .dropdown .item .button svg {
     width: 1.2rem;
+    margin-left: -.2rem;
 }
 .dropdown .item .button .arrow {
     transform: rotate(-90deg);
