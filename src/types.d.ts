@@ -48,8 +48,9 @@ interface VODHistory {
     start: number
 }
 
-interface HistoryResponse {
+interface UserVideosResponse {
     history: Array<VODHistory>|null
+    watch_later: Array<number>|null
 }
 
 interface m3u8Url {

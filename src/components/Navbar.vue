@@ -43,13 +43,16 @@ onBeforeMount(() => {
 
 <style scoped>
 #navbar {
-    background-color: var(--navbar-color);
-    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 3.4rem;
+    display: flex;
     z-index: 100;
-    font-size: 1.5em;
     font-size: 1.25em;
     box-shadow: 0 1px 2px rgba(0,0,0,.9),0 0px 2px rgba(0,0,0,.9);
+    background-color: var(--navbar-color);
 }
 .navbar {
     display: flex;

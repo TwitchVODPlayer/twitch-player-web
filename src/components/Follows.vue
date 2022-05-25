@@ -19,7 +19,7 @@ onBeforeMount(() => {
 
 <template>
     <h2>Followed channels</h2>
-    <Icon v-if="!followModule.getFollows" name="logo" class="loading" />
+    <Icon v-if="!followModule.getFollows" name="loading" class="loading" />
     <div v-else>
         <div class="follows">
             <div
@@ -38,7 +38,7 @@ onBeforeMount(() => {
                 </router-link>
             </div>
         </div>
-        <Icon v-if="followModule.isLoading" name="logo" class="loading small" />
+        <Icon v-if="followModule.isLoading" name="loading" class="loading small" />
         <div class="buttons-group">
             <Button v-if="followModule.getNext && !followModule.isLoading" class="show-more" :disabled="followModule.isLoading" @click="showMore(20)">Show more</Button>
         </div>
@@ -46,13 +46,6 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-.loading {
-    margin-top: 2rem;
-    width: 4rem;
-}
-.loading.small {
-    width: 2rem;
-}
 .follows {
     display: grid;
     grid-gap: 3rem;

@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue'
-
 import Navbar from './components/Navbar.vue'
+import Sidebar from './components/Sidebar.vue'
 import Loading from './components/Loading.vue'
-import { mainModule } from './store/main'
 import './store/history'
 import './store/user'
 import './store/follow'
 import './store/video'
 import './store/vod'
-
-onBeforeMount(() => {
-    mainModule.load()
-})
 </script>
 
 <template>
     <Loading />
     <Navbar />
+    <Sidebar />
     <router-view />
 </template>
 

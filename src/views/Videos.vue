@@ -56,7 +56,7 @@ onBeforeMount(() => {
                 @select="changeFilter"
             />
         </div>
-        <Icon v-if="!videoModule.getVideos" name="logo" class="loading" />
+        <Icon v-if="!videos" name="loading" class="loading" />
         <div v-else>
             <p v-if="!videos?.length">No videos found.</p>
             <div v-else class="videos">
@@ -66,39 +66,15 @@ onBeforeMount(() => {
                     :video="video"
                 />
             </div>
-            <Icon v-if="videoModule.isLoading" name="logo" class="loading small" />
+            <Icon v-if="videoModule.isLoading" name="loading" class="loading small" />
             <Button v-if="videoModule.getNext && !videoModule.isLoading" class="show-more" :disabled="videoModule.isLoading" @click="showMore(20)">Show more</Button>
         </div>
     </div>
 </template>
 
 <style scoped>
-.loading {
-    margin-top: 2rem;
-    width: 4rem;
-}
-.loading.small {
-    width: 2rem;
-}
 .content .title {
     position: relative;
-}
-.videos {
-    display: grid;
-    grid-gap: 3rem;
-    grid-template-columns: repeat(3, 1fr);
-    transition: .5s;
-    width: 100%;
-}
-@media screen and (max-width: 1024px) {
-    .videos {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media screen and (max-width: 720px) {
-    .videos {
-        grid-template-columns: 1fr
-    }
 }
 </style>
 

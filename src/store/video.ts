@@ -1,5 +1,5 @@
 import { VuexModule, Module, Mutation, Action, getModule } from 'vuex-module-decorators'
-import { getPlaylist, getVideos } from '../api/vod'
+import { getPlaylist, getVideos, getUserVideos } from '../api/vod'
 import { getUser } from '../api/user'
 import { error } from '../utils/popup'
 import store from '.'
@@ -31,23 +31,20 @@ export class VideoModule extends VuexModule {
     /* Actions */
     @Action
     async loadVideos({ login, first, filter }: { login: string, first?: number, filter?: string }) {
-        return this.loadUser({ login, force: !!filter }).then(() => {
-            if (!store.getters['user/getAccessToken']) return
-            this.context.commit('setLoading', true)
-            return getVideos({ login, first, filter }).then(videos => {
-                this.context.commit('loadVideosSuccess', videos)
-            }).catch((err: Error) => {
-                this.context.commit('loadVideosFailure', err)
-            }).then(() => {
-                this.context.commit('setLoading', false)
-            })
+        this.context.commit('setLoading', true)
+        return getUserVideos({ login, first, filter }).then(videos => {
+            this.context.commit('loadVideosSuccess', videos)
+        }).catch((err: Error) => {
+            this.context.commit('loadVideosFailure', err)
+        }).then(() => {
+            this.context.commit('setLoading', false)
         })
     }
     @Action
     async loadMoreVideos({ login, first }: { login: string, first?: number }) {
         if (!this.getNext || !store.getters['user/getAccessToken']) return
         this.context.commit('setLoading', true)
-        return getVideos({ login, first, next: this.getNext }).then(videos => {
+        return getUserVideos({ login, first, next: this.getNext }).then(videos => {
             this.context.commit('loadMoreVideosSuccess', videos)
         }).catch((err: Error) => {
             this.context.commit('loadMoreVideosFailure', err)
@@ -71,6 +68,17 @@ export class VideoModule extends VuexModule {
     async getPlaylistM3U8(vod_id: number) {
         if (!store.getters['user/getAccessToken']) return
         return getPlaylist(vod_id)
+    }
+    @Action
+    async fetchVideos(ids: number|Array<number>) {
+        if (!store.getters['user/getAccessToken']) return
+        this.context.commit('setLoading', true)
+        return getVideos(ids).then((data: VideosResponse) => data.videos).then(vids => {
+            return vids
+        }).catch(() => {}).then(vids => {
+            this.context.commit('setLoading', false)
+            return vids || undefined
+        })
     }
 
 

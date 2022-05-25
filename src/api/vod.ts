@@ -20,9 +20,21 @@ export async function getPlaylist(vod_id: string|number) {
     })
 }
 
-export async function getVideos({ login, next, first, filter }: { login: string, next?: string, first?: number, filter?: string}) {
+export async function getUserVideos({ login, next, first, filter }: { login: string, next?: string, first?: number, filter?: string}) {
     const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/twitch/videos/${login}`)
     url.search = new URLSearchParams(JSON.parse(JSON.stringify({ next, first, filter }))).toString()
+    return fetch(url.toString(), {
+        headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` }
+    }).then(res => res.json()).then(res => {
+        if (res.error) throw new ResponseError(res)
+        return res
+    })
+}
+
+export async function getVideos(ids: string|number|Array<string|number>) {
+    if (Array.isArray(ids)) ids = ids.join(',')
+    const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/twitch/videos`)
+    url.search = new URLSearchParams(JSON.parse(JSON.stringify({ id: String(ids) }))).toString()
     return fetch(url.toString(), {
         headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` }
     }).then(res => res.json()).then(res => {
@@ -54,6 +66,15 @@ export async function toggleHistory(value: boolean) {
 export async function setWatchtime({ vod, start }: { vod: string|number, start: number }) {
     const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/history/watchtime`)
     url.search = new URLSearchParams(JSON.parse(JSON.stringify({ vod, start }))).toString()
+    return fetch(url.toString(), {
+        headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` },
+        method: "PUT"
+    })
+}
+
+export async function setWatchLater({ vod, add }: { vod: string|number, add: boolean }) {
+    const url = new URL(`${import.meta.env.VITE_SERVER_BASE_URL}/api/history/watchlater`)
+    url.search = new URLSearchParams(JSON.parse(JSON.stringify({ vod, add }))).toString()
     return fetch(url.toString(), {
         headers: { 'Authorization': `Bearer ${userModule.getAccessToken}` },
         method: "PUT"
