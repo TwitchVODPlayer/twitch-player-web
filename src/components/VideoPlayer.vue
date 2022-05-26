@@ -25,7 +25,12 @@ const availableQualities: Ref<Array<SelectOption>> = ref([])
 
 watch(() => props.source, () => setSource())
 
-const setSource = function () {
+const getQualityLabel = function(quality: string) {
+    if (quality === "chunked") return "Source"
+    return quality.replace('p30', 'p')
+}
+
+const setSource = function() {
     if (!hls.value || !props.source) return
     loading.value = true
 
@@ -33,13 +38,10 @@ const setSource = function () {
 
     hls.value.on(Hls.Events.MANIFEST_PARSED, () => {
         if (!hls.value) return
-        availableQualities.value = hls.value.levels.map(l => {
-            const framerate = Math.ceil(Number(l.attrs["FRAME-RATE"]))
-            return {
-                label: `${l.height}p${framerate > 30 ? framerate : ''}`,
-                value: l.height
-            }
-        }).reverse() || []
+        availableQualities.value = hls.value.levels.map(l => ({
+            label: getQualityLabel(l.attrs.VIDEO),
+            value: l.height
+        })).reverse() || []
         availableQualities.value.unshift({
             label: 'Auto',
             value: 0
@@ -70,6 +72,7 @@ const setSource = function () {
         else span.innerHTML = `Auto`
 
         availableQualities.value.forEach(q => {
+            if (q.label === "Auto") return
             const span = document.querySelector(`.plyr__menu__container [data-plyr='quality'][value='${q.value}'] span`)
             if (span) span.innerHTML = String(q.label)
         })
