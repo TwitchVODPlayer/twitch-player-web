@@ -19,6 +19,12 @@
     --success-color: #00f593;
     --info-color: #0e0e10;
     --warning-color: #0e0e10;
+
+    --plyr-color-main: var(--primary-color);
+    --plyr-menu-color: var(--text-color);
+    --plyr-menu-background: var(--sidebar-color);
+    --plyr-menu-back-border-color: var(--background-input-color);
+    --plyr-menu-back-border-shadow-color: var(--background-input-color);
 }
 
 @font-face {
