@@ -21,6 +21,7 @@ const player: Ref<Plyr | null> = ref(null)
 const hls: Ref<Hls | null> = ref(null)
 const videoRef: Ref<HTMLElement | string> = ref("videoRef")
 const loading: Ref<boolean> = ref(false)
+const availableQualities: Ref<Array<SelectOption>> = ref([])
 
 watch(() => props.source, () => setSource())
 
@@ -32,18 +33,27 @@ const setSource = function () {
 
     hls.value.on(Hls.Events.MANIFEST_PARSED, () => {
         if (!hls.value) return
-        const availableQualities = hls.value.levels.map(l => l.height).reverse() || []
-        availableQualities.unshift(0)
+        availableQualities.value = hls.value.levels.map(l => {
+            const framerate = Math.ceil(Number(l.attrs["FRAME-RATE"]))
+            return {
+                label: `${l.height}p${framerate > 30 ? framerate : ''}`,
+                value: l.height
+            }
+        }).reverse() || []
+        availableQualities.value.unshift({
+            label: 'Auto',
+            value: 0
+        })
         player.value = new Plyr(videoRef.value, {
             quality: {
                 default: 0,
-                options: availableQualities || [],
+                options: availableQualities.value.map(q => Number(q.value)) || [],
                 forced: true,
                 onChange: (e) => updateQuality(e)
             },
             i18n: {
                 qualityLabel: {
-                    0: 'Auto',
+                    0: 'Auto'
                 }
             }
         })
@@ -58,6 +68,11 @@ const setSource = function () {
         if (!span) return
         if (hls.value.autoLevelEnabled) span.innerHTML = `Auto (${hls.value.levels[data.level].height}p)`
         else span.innerHTML = `Auto`
+
+        availableQualities.value.forEach(q => {
+            const span = document.querySelector(`.plyr__menu__container [data-plyr='quality'][value='${q.value}'] span`)
+            if (span) span.innerHTML = String(q.label)
+        })
     })
 
     hls.value.on(Hls.Events.ERROR, (_, data) => {
