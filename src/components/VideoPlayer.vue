@@ -134,4 +134,7 @@ onBeforeUnmount(() => {
 .video:not(.loaded) [class*="plyr__control"] {
     display: none;
 }
+.plyr__menu__container .plyr__control[role=menuitemradio]:before {
+    background: var(--background-input-color);
+}
 </style>
