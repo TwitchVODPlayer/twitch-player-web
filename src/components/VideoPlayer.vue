@@ -26,6 +26,7 @@ const availableQualities: Ref<Array<SelectOption>> = ref([])
 watch(() => props.source, () => setSource())
 
 const getQualityLabel = function(quality: string) {
+    quality = quality.split(',')[0]
     if (quality === "chunked") return "Source"
     return quality.replace('p30', 'p')
 }
@@ -62,13 +63,19 @@ const setSource = function() {
         player.value.on('ended', () => {
             historyModule.setWatchtime({ start: 0 })
         })
+        player.value.on('qualitychange', (event: any) => {
+            const qualitySetting = document.querySelector('[role="menu"] > [data-plyr="settings"]:nth-child(2) .plyr__menu__value')
+            if (qualitySetting) qualitySetting.innerHTML = availableQualities.value.find(q => event.detail.quality == q.value)?.label || event.detail.quality
+        })
     })
 
     hls.value.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
         if (!hls.value) return
         const span = document.querySelector(".plyr__menu__container [data-plyr='quality'][value='0'] span")
         if (!span) return
-        if (hls.value.autoLevelEnabled) span.innerHTML = `Auto (${hls.value.levels[data.level].height}p)`
+        const qualityLabel = String(availableQualities.value[hls.value.levels.length - data.level].label)
+
+        if (hls.value.autoLevelEnabled) span.innerHTML = `Auto (${qualityLabel})`
         else span.innerHTML = `Auto`
 
         availableQualities.value.forEach(q => {
