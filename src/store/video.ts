@@ -26,6 +26,9 @@ export class VideoModule extends VuexModule {
     get getUser(): User|undefined {
         return this.user
     }
+    get getVideo(): Video|undefined {
+        return this.videos?.find(v => v.id == store.getters['vod/getVod'])
+    }
     
 
     /* Actions */
