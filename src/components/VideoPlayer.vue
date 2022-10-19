@@ -6,9 +6,11 @@ import Hls, { Level } from 'hls.js'
 import { historyModule } from '../store/history'
 import { userModule } from '../store/user'
 import { error } from '../utils/popup'
+import { useRoute } from 'vue-router'
 
 import Icon from './Icon.vue'
 
+const route = useRoute()
 const props = defineProps({
     options: {
         type: Object,
@@ -22,6 +24,7 @@ const hls: Ref<Hls | null> = ref(null)
 const videoRef: Ref<HTMLElement | string> = ref("videoRef")
 const loading: Ref<boolean> = ref(false)
 const availableQualities: Ref<Array<SelectOption>> = ref([])
+const iframe = ref(false)
 
 watch(() => props.source, () => setSource())
 
@@ -112,6 +115,7 @@ const updateQuality = function (newQuality: number) {
 
 onBeforeMount(() => {
     if (!Hls.isSupported()) error("Your browser doesn't support Hls.")
+    iframe.value = route.query.hasOwnProperty('iframe')
 })
 
 onMounted(() => {
@@ -129,7 +133,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div :class="{ video: true, loaded: !loading }">
+    <div class="video" :class="{ 'loaded': !loading, 'iframe': iframe }">
         <video ref="videoRef"></video>
         <div v-if="loading" class="loading-container">
             <Icon name="loading" class="loading" />
@@ -139,10 +143,22 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .video {
-    max-width: 1280px !important;
-    max-height: 720px !important;
+    max-width: 1280px;
+    max-height: 720px;
     margin: 2rem auto;
     position: relative;
+}
+.video.iframe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    max-width: unset;
+    max-height: unset;
+    z-index: 10000;
+    margin: 0;
+    padding: 0;
 }
 .video .loading-container {
     position: absolute;
